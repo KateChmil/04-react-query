@@ -1,20 +1,14 @@
 import axios from 'axios';
-import type { Movie } from "../types/movie.ts";
+import type { MoviesResponse } from "../types/movie.ts";
 
 const myKey = import.meta.env.VITE_API_KEY;
 
- interface MoviesResponse {
-    page: number;
-    results: Movie[];
-    total_pages: number;
-    total_results: number;
-}
 
 
 
-export const fetchMovies = async (query: string): Promise<MoviesResponse> => {
+export const fetchMovies = async (query: string, page = 1): Promise<MoviesResponse> => {
     const config = {
-        params: { query },
+        params: { query, page },
         headers: {
             Authorization: `Bearer ${myKey}`
         },
