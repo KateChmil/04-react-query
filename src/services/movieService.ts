@@ -1,8 +1,13 @@
 import axios from 'axios';
-import type { MoviesResponse } from "../types/movie.ts";
+import type { Movie } from "../types/movie.ts";
 
 const myKey = import.meta.env.VITE_API_KEY;
-
+interface MoviesResponse {
+    page: number;
+    results: Movie[];
+    total_pages: number;
+    total_results: number;
+}
 
 
 

@@ -1,9 +1,10 @@
 import css from './App.module.css'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 import { fetchMovies } from "../../services/movieService";
-import type { Movie, MoviesResponse } from '../../types/movie';
+import type { Movie } from '../../types/movie';
 
 import SearchBar from '../SearchBar/SearchBar';
 import Loader from '../Loader/Loader';
@@ -14,6 +15,13 @@ import MovieModal from '../MovieModal/MovieModal';
 
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import ReactPaginate from 'react-paginate';
+
+interface MoviesResponse {
+    page: number;
+    results: Movie[];
+    total_pages: number;
+    total_results: number;
+}
 
 export default function App() {
 
@@ -50,12 +58,17 @@ export default function App() {
     setPage(1);}
 
 
-
+useEffect(() => {
+    if (isSuccess && data?.results.length === 0) {
+      toast.error('No movies found for your request.');
+    }
+  }, [isSuccess, data]);
 
 
    return (
       <div className={css.app}>
-      <SearchBar onSubmit={handleSearch} />
+       <SearchBar onSubmit={handleSearch} />
+       <Toaster position="top-right" />
     
 
       {isLoading && <Loader />}
